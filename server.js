@@ -41,9 +41,13 @@ app.use(passUserToView);
 //Routes
 
 app.get('/', (req, res) => {
-  res.render('index.ejs', {
-    user: req.session.user,
-  });
+  if (req.session.user) {
+    //redirect signed in users to app index
+    res.redirect(`/users/${req.session.user._id}/applications`);
+  } else {
+    //show homepage for users not signed in
+    res.render('index.ejs');
+  }
 });
 
 app.use('/auth', authController);
