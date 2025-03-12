@@ -2,6 +2,8 @@
 //check to see if the user is there, it they are the set to res.local
 //if user is not there set to null
 //next calls the next function in route handling sequence
+//shortcut: always pass the info of logged in user to our request final
+// destination
 
 const passUserToView = (req, res, next) => {
     res.locals.user = req.session.user ? req.session.user : null;
@@ -20,7 +22,7 @@ res.local.user = req.session.user;
 } else {
     res.locals.user = null
  }
-    
+
  */
 
 module.exports = passUserToView;
