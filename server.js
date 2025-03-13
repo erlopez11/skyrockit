@@ -23,7 +23,8 @@ mongoose.connection.on('connected', () => {
 
 //Middleware
 
-app.use(express.urlencoded({ extended: false }));
+//decodes form submission and makes it available
+app.use(express.urlencoded({ extended: false })); 
 app.use(methodOverride('_method'));
 // app.use(morgan('dev'));
 app.use(
