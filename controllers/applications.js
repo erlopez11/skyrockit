@@ -54,6 +54,24 @@ router.get('/:applicationId', async (req, res) => {
     }
 });
 
+//DELETE /user/:userId/application/:applicationId
+router.delete('/:applicationId', async (req, res) => {
+    try {
+        //Look up the current user
+        const currentUser = await User.findById(req.session.user._id);
+        //find the currently logged in users subdocument using the app id
+        //use the deleteOne() to delete app (only deletes from memory)
+        currentUser.applications.id(req.params.applicationId).deleteOne();
+        //save so that the changes reflect in the database 
+        await currentUser.save()
+        //redirec the user back to the app index
+        res.redirect(`/users/${currentUser._id}/applications`);
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+})
+
 
 
 
