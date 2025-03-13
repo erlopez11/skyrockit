@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
         console.log(error);
         res.redirect('/');
     }
-})
+});
 
 //GET /users/:userID/applications/:applicationID
 router.get('/:applicationId', async (req, res) => {
@@ -70,7 +70,38 @@ router.delete('/:applicationId', async (req, res) => {
         console.log(error);
         res.redirect('/');
     }
-})
+});
+
+//GET /users/:userId/applications/:applicationId/edit
+router.get('/:applicationId/edit', async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.session.user._id);
+        const application = currentUser.applications.id(req.params.applicationId);
+        res.render('applications/edit.ejs', {
+            application
+        });
+    } catch (error) {
+        console.log(error);
+        red.redirect('/');
+    }
+});
+
+//PUT /users/:userID/applications/:applicationId
+router.put('/:applicationId', async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.session.user._id);
+        const application = currentUser.applications.id(req.params.applicationId);
+        //use mongoose .set() method
+        //this updates the current app with info from new form data in req body
+        application.set(req.body);//update in memory
+        await currentUser.save();//update save to database
+        //redirect to the show page of current app
+        res.redirect(`/users/${currentUser._id}/applications/${req.params.applicationId}`);
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+});
 
 
 
